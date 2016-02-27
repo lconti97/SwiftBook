@@ -26,16 +26,21 @@ public class MainActivity  extends Activity {
     private Button commentsButton;
     private String contentType;
     private LinearLayout contentLayout;
+    private boolean liked;
 
     private TextView user;
     private TextView status;
     private ImageView image;
     private TextView caption;
+    private Button nextPic;
+    private int[] imageIds;
+    private int imageIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isPostView = true;
+        liked = false;
         setContentView(R.layout.activity_main);
         postText = (EditText) findViewById(R.id.post_text);
         nextButton = (Button) findViewById(R.id.next_button);
@@ -57,7 +62,29 @@ public class MainActivity  extends Activity {
                     postText.setLayoutParams(loparams);
                     showButton(likeButton);
                     showButton(commentsButton);
+                    likeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(!liked) {
+                                liked = true;
+                                likeButton.setText("LIKED!");
+                                likeButton.setBackgroundResource(R.color.darkTeal);
+                            }
+                            else {
+                                liked = false;
+                                likeButton.setText("LIKE");
+                                likeButton.setBackgroundResource(R.color.teal);
+                            }
+
+                        }
+                    });
                     isPostView = false;
+                }
+                contentLayout.removeAllViews();
+                if(liked) {
+                    liked = false;
+                    likeButton.setText("LIKE");
+                    likeButton.setBackgroundResource(R.color.teal);
                 }
                 nextPost();
             }
@@ -67,7 +94,8 @@ public class MainActivity  extends Activity {
     private void nextPost() {
 
 //        displayTextPost();
-        displayPicturePost();
+//        displayPicturePost();
+        displayAlbumPost();
     }
 
     private void displayTextPost() {
@@ -80,19 +108,57 @@ public class MainActivity  extends Activity {
         user = createTextView("Lucas Conti");
         user.setTypeface(null, Typeface.BOLD);
         caption = createTextView("I'm frat af!");
+        //TODO: set ellipsize
         caption.setMaxLines(2);
         image = new ImageView(getApplicationContext());
         image.setImageResource(R.mipmap.psk);
-        LinearLayout.LayoutParams loparams =
-//                (LinearLayout.LayoutParams) image.getLayoutParams();
+        LinearLayout.LayoutParams imageParams =
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT, 1);
-//        loparams.weight = 1;
-        loparams.gravity = Gravity.CENTER;
-        image.setLayoutParams(loparams);
+        imageParams.gravity = Gravity.CENTER;
+        image.setLayoutParams(imageParams);
         image.setAdjustViewBounds(true);
         contentLayout.addView(image);
+    }
 
+    private void displayAlbumPost() {
+        user = createTextView("Lucas Conti");
+        user.setTypeface(null, Typeface.BOLD);
+        caption = createTextView("I'm frat af!");
+        caption.setMaxLines(2);
+        image = new ImageView(getApplicationContext());
+        image.setImageResource(R.mipmap.psk);
+        LinearLayout.LayoutParams imageParams =
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+        imageParams.gravity = Gravity.CENTER;
+        imageParams.setMargins(0,40,0,40);
+        image.setLayoutParams(imageParams);
+        image.setAdjustViewBounds(true);
+        contentLayout.addView(image);
+        nextPic = new Button(getApplicationContext());
+        ViewGroup.LayoutParams buttonParams = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        nextPic.setText("NEXT PHOTO");
+        nextPic.setTextColor(Color.BLACK);
+        nextPic.setBackgroundResource(R.color.teal);
+        nextPic.setLayoutParams(buttonParams);
+        contentLayout.addView(nextPic);
+        imageIds = new int[2];
+        imageIds[0] = R.mipmap.psk;
+        imageIds[1] = R.mipmap.psk2;
+        imageIndex = 0;
+        nextPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageIndex++;
+                image.setImageResource(imageIds[imageIndex]);
+                if(imageIndex + 1 == imageIds.length) {
+                    nextPic.setText("NO MORE PICTURES");
+                    nextPic.setEnabled(false);
+                }
+            }
+        });
     }
 
     private void hideView(View v) {
