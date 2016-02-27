@@ -14,13 +14,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Write something..."
-        android:inputType="textCapSentences" />
+        android:inputType="textCapSentences|textMultiLine"
+        android:maxLines="5"
+        android:scrollbars="vertical"
+        android:scrollHorizontally="false"/>
 
     <LinearLayout
         android:id="@+id/button_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        >
 
         <Button
             style="@style/ButtonStyle"
@@ -35,10 +39,23 @@
             style="@style/ButtonStyle"
             android:id="@+id/like_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:text="LIKE"
             android:layout_weight="0"
-            android:background="@color/colorPrimary" />
+            android:background="@color/teal"
+            android:singleLine="true"
+            />
+
+        <Button
+            style="@style/ButtonStyle"
+            android:id="@+id/comments_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="COMMENTS"
+            android:layout_weight="0"
+            android:background="@color/blue"
+            android:singleLine="true"
+            />
 
         <Button
             style="@style/ButtonStyle"
@@ -47,7 +64,9 @@
             android:layout_height="wrap_content"
             android:text="NEXT"
             android:layout_weight="1"
-            android:background="@color/purple" />
+            android:background="@color/purple"
+            android:singleLine="true"
+            />
 
     </LinearLayout>
 
