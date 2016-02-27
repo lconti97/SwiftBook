@@ -14,20 +14,32 @@ public class MainActivity  extends Activity {
     EditText postText;
     Button nextButton;
     Button postButton;
-    LinearLayout layout;
+    LinearLayout buttonBar;
+    boolean isPostView;
+    Button likeButton;
+    Button commentsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isPostView = true;
         setContentView(R.layout.activity_main);
         postText = (EditText) findViewById(R.id.post_text);
         nextButton = (Button) findViewById(R.id.next_button);
         postButton = (Button) findViewById(R.id.post_button);
-        layout = (LinearLayout) findViewById(R.id.button_bar);
+        buttonBar = (LinearLayout) findViewById(R.id.button_bar);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                layout.removeView(postButton);
+                if (isPostView) {
+//                    buttonBar.removeView(postButton);
+                    LinearLayout.LayoutParams loparams =
+                            (LinearLayout.LayoutParams) postButton.getLayoutParams();
+                    loparams.weight = 0;
+                    loparams.width = 0;
+                    postButton.setLayoutParams(loparams);
+                }
+
             }
         });
     }
